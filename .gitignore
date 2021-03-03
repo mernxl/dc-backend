@@ -1,8 +1,8 @@
 # compiled output
 build
 
-# media upload files
-/media
+# receipt pdfs
+/receipts
 
 # dependencies
 /node_modules
