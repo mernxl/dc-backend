@@ -1,6 +1,6 @@
 import { NODE_ENV } from '@xelgrp/configu';
-import { MongoMemoryReplSet } from 'mongodb-memory-server-global';
-import mongoose, { Connection, ConnectionOptions, ConnectionStates } from 'mongoose';
+import type { MongoMemoryReplSet } from 'mongodb-memory-server-global';
+import mongoose, { Connection, ConnectionOptions } from 'mongoose';
 
 import { config } from './config';
 import { wLogger } from './winston';
@@ -46,6 +46,8 @@ export function createMongooseConnection(
 ): Connection {
   const opts: CreateMongooseConnectionOptions = {
     uri: config.mongodb.uri,
+    host: config.mongodb.host,
+    port: String(config.mongodb.port),
     username: config.mongodb.user,
     password: config.mongodb.pass,
     ...options,
@@ -66,7 +68,9 @@ export function createMongooseConnection(
     : `${config.cloxel.subscriptionId}_${moduleName}${DB_ENV ? '_' + DB_ENV : ''}`;
 
   // on production, autoIndexes are not set
-  connectionOptions.autoIndex = config.NODE_ENV !== NODE_ENV.PRODUCTION;
+  connectionOptions.config = {
+    autoIndex: config.NODE_ENV !== NODE_ENV.PRODUCTION,
+  };
 
   connectionOptions.promiseLibrary = Promise;
 
@@ -81,7 +85,9 @@ export function createMongooseConnection(
     // since we use Transactions (retryableWrites)
     // We can only deploy to replica sets with a primary having wiredTiger storage engine
     // @see https://docs.mongodb.com/manual/core/inmemory/#transactions
-    const server = new MongoMemoryReplSet({
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const MongoMemoryReplSetClass = require('mongodb-memory-server-global').MongoMemoryReplSet;
+    const server: MongoMemoryReplSet = new MongoMemoryReplSetClass({
       replSet: { storageEngine: 'wiredTiger' },
     });
 
@@ -102,7 +108,7 @@ export function createMongooseConnection(
 }
 
 export const waitForOpenConnection = async (connection: Connection): Promise<Connection> => {
-  if (connection.readyState === ConnectionStates.connected) {
+  if (connection.readyState === connection.states.connected) {
     return connection;
   }
 

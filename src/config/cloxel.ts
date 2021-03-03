@@ -80,7 +80,7 @@ export class Cloxel {
       htmlToPdf: async (
         urlOrContent: string,
         filename?: string,
-        options?: Omit<PDFOptions, 'urlOrContent' | 'fileContent'>,
+        options: Omit<PDFOptions, 'urlOrContent' | 'fileContent'> = {},
       ): Promise<AxiosResponse<Readable>> => {
         const request: AxiosRequestConfig = {
           baseURL: baseUrl,
