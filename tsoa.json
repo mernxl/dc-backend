@@ -1,0 +1,22 @@
+{
+  "noImplicitAdditionalProperties": "silently-remove-extras",
+  "controllerPathGlobs": ["./src/**/*.controller.ts"],
+  "ignore": ["**/node_modules/**"],
+  "spec": {
+    "basePath": "",
+    "specVersion": 3,
+    "host": null,
+    "outputDirectory": "./src/routes",
+    "securityDefinitions": {
+      "Bearer": { "type": "apiKey", "name": "Authorization", "in": "header" }
+    },
+    "specMerging": "recursive",
+    "spec": { "paths": {} }
+  },
+  "routes": {
+    "basePath": "",
+    "routesDir": "./src/routes",
+    "middleware": "express",
+    "authenticationModule": "./src/config/authorization.ts"
+  }
+}

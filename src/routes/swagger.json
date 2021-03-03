@@ -1,0 +1,87 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {},
+		"securitySchemes": {
+			"Bearer": {
+				"type": "apiKey",
+				"name": "Authorization",
+				"in": "header"
+			}
+		}
+	},
+	"info": {
+		"title": "dc-backend",
+		"version": "1.0.0",
+		"description": "Demo-Commerce-Backend (dc-backend) node api",
+		"license": {
+			"name": "NONE"
+		},
+		"contact": {
+			"name": "mernxl ",
+			"email": "mernxl@gmail.com"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/health-check": {
+			"get": {
+				"operationId": "Index",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Health Check"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/health-check/secured": {
+			"get": {
+				"operationId": "Secured",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"description": "To test, pass \"Bearer root\" as token",
+				"summary": "This endpoint is secured, Login and use the authentication to go through",
+				"tags": [
+					"Health Check"
+				],
+				"security": [
+					{
+						"Bearer": []
+					}
+				],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

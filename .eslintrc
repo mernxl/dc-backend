@@ -1,0 +1,34 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "simple-import-sort",
+    "prettier"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier/@typescript-eslint"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module"
+  },
+  "env": {
+    "es2017": true,
+    "node": true
+  },
+  "rules": {
+    "no-console": "warn",
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/explicit-member-accessibility": 0,
+    "@typescript-eslint/interface-name-prefix": 0,
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
+  }
+}
