@@ -1,0 +1,10 @@
+{
+  "app": {
+    "name": "Demo Commerce"
+  },
+  "school": {
+    "name": "COLTECH"
+  },
+  "shopName": "COLTECH Shop",
+  "footerText": "Demo Ecommerce Application"
+}

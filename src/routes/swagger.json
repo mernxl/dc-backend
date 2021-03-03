@@ -5,7 +5,154 @@
 		"parameters": {},
 		"requestBodies": {},
 		"responses": {},
-		"schemas": {},
+		"schemas": {
+			"Product": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"price"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Page_Product_": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/Product"
+						},
+						"type": "array",
+						"description": "Actual data as requested"
+					},
+					"total": {
+						"type": "number",
+						"format": "double",
+						"description": "Total Elements available in the query made."
+					},
+					"per_page": {
+						"type": "number",
+						"format": "double",
+						"description": "Items on each page"
+					},
+					"current_page": {
+						"type": "number",
+						"format": "double",
+						"description": "Current page number"
+					},
+					"has_next": {
+						"type": "boolean",
+						"description": "If it has next page from current page"
+					},
+					"has_prev": {
+						"type": "boolean",
+						"description": "If it has prev page from current page"
+					},
+					"next_page": {
+						"type": "string",
+						"description": "Link to next page"
+					},
+					"prev_page": {
+						"type": "string",
+						"description": "Link to previous page"
+					},
+					"first_page": {
+						"type": "string",
+						"description": "Link to first page"
+					},
+					"last_page": {
+						"type": "string",
+						"description": "Link to last page"
+					}
+				},
+				"required": [
+					"data",
+					"total",
+					"per_page",
+					"current_page",
+					"has_next",
+					"has_prev",
+					"next_page",
+					"prev_page",
+					"first_page",
+					"last_page"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PageQueryParam": {
+				"type": "number",
+				"format": "double",
+				"default": "1",
+				"description": "Page to get, pages start from 1 to infinity",
+				"minimum": 1
+			},
+			"PerPageQueryParam": {
+				"type": "number",
+				"format": "double",
+				"default": "30",
+				"description": "Items Per page, maximum to get is 100, defaults is 30",
+				"maximum": 100
+			},
+			"ProductCreateInput": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"name",
+					"price"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProductUpdateInput": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProductReceiptInput": {
+				"properties": {
+					"productIds": {
+						"items": {
+							"type": "number",
+							"format": "double"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"productIds"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
 		"securitySchemes": {
 			"Bearer": {
 				"type": "apiKey",
@@ -76,6 +223,170 @@
 					}
 				],
 				"parameters": []
+			}
+		},
+		"/products": {
+			"get": {
+				"operationId": "Page",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Page_Product_"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Page through all products stored",
+				"tags": [
+					"Product"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/PageQueryParam"
+						}
+					},
+					{
+						"in": "query",
+						"name": "per_page",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/PerPageQueryParam"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateOne",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Product"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Create a product",
+				"tags": [
+					"Product"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ProductCreateInput"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/products/{id}": {
+			"put": {
+				"operationId": "UpdateOne",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Product"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Update a product",
+				"tags": [
+					"Product"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ProductUpdateInput"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteOne",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"summary": "Delete a product",
+				"tags": [
+					"Product"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/products/receipt": {
+			"post": {
+				"operationId": "Receipt",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"summary": "Send receipt of a given products",
+				"tags": [
+					"Product"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ProductReceiptInput"
+							}
+						}
+					}
+				}
 			}
 		}
 	},
